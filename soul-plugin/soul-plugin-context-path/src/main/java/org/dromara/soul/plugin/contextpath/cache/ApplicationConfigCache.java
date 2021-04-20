@@ -15,44 +15,38 @@
  * limitations under the License.
  */
 
-package org.dromara.soul.plugin.ratelimiter.algorithm;
+package org.dromara.soul.plugin.contextpath.cache;
 
-import org.dromara.soul.spi.SPI;
-import org.springframework.data.redis.core.script.RedisScript;
-
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.dromara.soul.common.dto.convert.rule.impl.ContextMappingHandle;
+import org.dromara.soul.plugin.base.cache.BaseHandleCache;
 
 /**
- * The interface Rate limiter algorithm.
- *
- * @param <T> the type parameter
- * @author xiaoyu
+ * The type Application config cache.
  */
-@SPI
-public interface RateLimiterAlgorithm<T> {
-    
+@SuppressWarnings("all")
+@Slf4j
+public final class ApplicationConfigCache extends BaseHandleCache<String, ContextMappingHandle> {
+
+    private ApplicationConfigCache() {
+    }
+
     /**
-     * Gets script.
+     * Gets instance.
      *
-     * @return the script
+     * @return the instance
      */
-    RedisScript<T> getScript();
-    
+    public static ApplicationConfigCache getInstance() {
+        return ApplicationConfigCacheInstance.INSTANCE;
+    }
+
     /**
-     * Gets keys.
-     *
-     * @param id the id
-     * @return the keys
+     * The type Application config cache instance.
      */
-    List<String> getKeys(String id);
-    
-    /**
-     * Callback string.
-     *
-     * @param script the script
-     * @param keys the keys
-     * @param scriptArgs the script args
-     */
-    default void callback(final RedisScript<?> script, final List<String> keys, final List<String> scriptArgs) {
+    static class ApplicationConfigCacheInstance {
+        /**
+         * The Instance.
+         */
+        static final ApplicationConfigCache INSTANCE = new ApplicationConfigCache();
     }
 }

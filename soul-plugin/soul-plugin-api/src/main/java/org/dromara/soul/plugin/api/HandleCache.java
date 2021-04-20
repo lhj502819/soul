@@ -15,44 +15,35 @@
  * limitations under the License.
  */
 
-package org.dromara.soul.plugin.ratelimiter.algorithm;
-
-import org.dromara.soul.spi.SPI;
-import org.springframework.data.redis.core.script.RedisScript;
-
-import java.util.List;
+package org.dromara.soul.plugin.api;
 
 /**
- * The interface Rate limiter algorithm.
+ * The selector or rule handle cache.
  *
- * @param <T> the type parameter
- * @author xiaoyu
+ * @author zl
  */
-@SPI
-public interface RateLimiterAlgorithm<T> {
-    
+public interface HandleCache<K, V> {
+
     /**
-     * Gets script.
+     * Obtain selector or rule handle.
      *
-     * @return the script
+     * @param key key
+     * @return v handle
      */
-    RedisScript<T> getScript();
-    
+    V obtainHandle(K key);
+
     /**
-     * Gets keys.
+     * Cached selector or rule handle.
      *
-     * @param id the id
-     * @return the keys
+     * @param key   key
+     * @param value value
      */
-    List<String> getKeys(String id);
-    
+    void cachedHandle(K key, V value);
+
     /**
-     * Callback string.
+     * Remove selector or rule handle.
      *
-     * @param script the script
-     * @param keys the keys
-     * @param scriptArgs the script args
+     * @param key key
      */
-    default void callback(final RedisScript<?> script, final List<String> keys, final List<String> scriptArgs) {
-    }
+    void removeHandle(K key);
 }

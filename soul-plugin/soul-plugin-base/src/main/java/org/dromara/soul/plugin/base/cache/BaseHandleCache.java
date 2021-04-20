@@ -15,44 +15,39 @@
  * limitations under the License.
  */
 
-package org.dromara.soul.plugin.ratelimiter.algorithm;
+package org.dromara.soul.plugin.base.cache;
 
-import org.dromara.soul.spi.SPI;
-import org.springframework.data.redis.core.script.RedisScript;
+import org.dromara.soul.plugin.api.HandleCache;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The interface Rate limiter algorithm.
+ * The selector or rule handle base cache.
  *
- * @param <T> the type parameter
- * @author xiaoyu
+ * @author zl
  */
-@SPI
-public interface RateLimiterAlgorithm<T> {
-    
+public abstract class BaseHandleCache<K, V> implements HandleCache<K, V> {
+
     /**
-     * Gets script.
-     *
-     * @return the script
+     * selectorId.ruleName -> handle.
      */
-    RedisScript<T> getScript();
-    
-    /**
-     * Gets keys.
-     *
-     * @param id the id
-     * @return the keys
-     */
-    List<String> getKeys(String id);
-    
-    /**
-     * Callback string.
-     *
-     * @param script the script
-     * @param keys the keys
-     * @param scriptArgs the script args
-     */
-    default void callback(final RedisScript<?> script, final List<String> keys, final List<String> scriptArgs) {
+    private final ConcurrentHashMap<K, V> cached = new ConcurrentHashMap<>();
+
+    @Override
+    public V obtainHandle(final K key) {
+        return cached.get(key);
+    }
+
+    @Override
+    public void cachedHandle(final K key, final V value) {
+        Optional.ofNullable(key).ifPresent(data -> cached.put(key, value));
+    }
+
+    @Override
+    public void removeHandle(final K key) {
+        Optional.ofNullable(key).ifPresent(k -> cached.remove(k));
     }
 }
+
+
