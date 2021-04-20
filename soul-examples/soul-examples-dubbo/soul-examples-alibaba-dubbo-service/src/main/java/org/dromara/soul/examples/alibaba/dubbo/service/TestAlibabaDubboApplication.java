@@ -28,7 +28,7 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @ImportResource({"classpath:spring-dubbo.xml"})
 public class TestAlibabaDubboApplication {
-
+    //测试分支
     /**
      * Main Entrance.
      *
