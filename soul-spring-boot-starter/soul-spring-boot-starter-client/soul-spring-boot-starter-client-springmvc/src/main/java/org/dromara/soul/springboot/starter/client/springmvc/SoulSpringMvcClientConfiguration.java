@@ -32,6 +32,9 @@ import org.springframework.context.annotation.Configuration;
  * @author xiaoyu
  */
 @Configuration
+//通过ImportAutoConfiguration指定装配SoulClientCommonBeanConfiguration
+//SoulClientCommonBeanConfiguration是soul-spring-boot-starter-client-common工程下的类，说明该类是提供给所有的SoulClient Starter的
+//  通过查看pom.xml文件也可以看到，所有的starter都依赖了soul-spring-boot-starter-client-common工程
 @ImportAutoConfiguration(SoulClientCommonBeanConfiguration.class)
 public class SoulSpringMvcClientConfiguration {
     

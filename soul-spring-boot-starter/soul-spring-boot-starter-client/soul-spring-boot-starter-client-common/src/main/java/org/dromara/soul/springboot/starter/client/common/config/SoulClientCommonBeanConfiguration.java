@@ -46,6 +46,9 @@ public class SoulClientCommonBeanConfiguration {
     /**
      * Soul Register Center Config.
      *
+     *
+     * soul client 注册中心 相关的配置
+     *
      * @return the Register Center Config
      */
     @Bean
